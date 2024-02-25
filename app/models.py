@@ -1,16 +1,17 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, CheckConstraint, Date
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm import validates
 
-from .database import Base
+#from .database import Base
+from database import Base
 
 from datetime import date
 
 import re
 
-EMAIL_REGEX = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-
-def validate_email(email):
-    return re.match(EMAIL_REGEX, email) is not None
+def is_valid_email(email):
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(pattern, email) is not None
 
 class User(Base):
     __tablename__ = "usuario"
@@ -21,10 +22,18 @@ class User(Base):
     foto = Column(String)
     postagens = relationship("Post", back_populates="autor")
 
+    @validates('email')
+    def validate_email(self, key, email):
+        if not email:
+            raise ValueError("Email address cannot be empty")
+        if not is_valid_email(email):
+            raise ValueError("Invalid email address format")
+        return email
+
     __table_args__ = (
         CheckConstraint("LENGTH(nome) >= 3", name='check_nome_length'),
-        CheckConstraint(validate_email(email), name='check_email_format'),
     )
+
 
 
 class Post(Base):
@@ -55,3 +64,5 @@ class Theme(Base):
     __table_args__ = (
         CheckConstraint("LENGTH(descricao) >= 3", name='check_descricao_length'),
     )
+
+print('rodou')
