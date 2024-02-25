@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas
 
-# TROCAR O NOME DAS TABELAS E ADICIONAR MAIS UMA TABELA
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
@@ -12,7 +11,7 @@ def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
+def get_user(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
@@ -25,13 +24,23 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def get_items(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+def get_post(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Post).offset(skip).limit(limit).all()
 
 
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
-    db.add(db_item)
+def create_user_post(db: Session, item: schemas.PostCreate, user_id: int):
+    db_post = models.Post(**item.dict(), usuario_id=user_id)
+    db.add(db_post)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_post)
+    return db_post
+
+def get_theme(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Theme).offset(skip).limit(limit).all()
+
+def create_user_theme(db: Session, item: schemas.ThemeCreate, user_id: int):
+    db_theme = models.Theme(**item.dict(), usuario_id=user_id)
+    db.add(db_theme)
+    db.commit()
+    db.refresh(db_theme)
+    return db_theme

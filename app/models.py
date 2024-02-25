@@ -15,7 +15,7 @@ def validate_email(email):
 class User(Base):
     __tablename__ = "usuario"
 
-    id = Column(Integer, primary_key=True, _AutoIncrementType=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     nome = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     foto = Column(String)
@@ -30,7 +30,7 @@ class User(Base):
 class Post(Base):
     __tablename__ = "postagem"
 
-    id = Column(Integer, primary_key=True, _AutoIncrementType=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     titulo = Column(String, nullable=False)
     texto = Column(String, nullable=False)
     data = Column(Date, nullable=False)
@@ -48,7 +48,7 @@ class Post(Base):
 class Theme(Base):
     __tablename__ = "tema"
 
-    id = Column(Integer, primary_key=True, _AutoIncrementType=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     descricao = Column(String, nullable=False)
     postagens = relationship("Post", back_populates="tema") 
 
