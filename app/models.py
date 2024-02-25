@@ -2,8 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, CheckConstraint, Dat
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import validates
 
-#from .database import Base
-from database import Base
+from .database import Base
 
 from datetime import date
 
