@@ -34,7 +34,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    postagem: list[Post] = []
+    postagem: List[Post] = []
 
     class Config:
         orm_mode = True

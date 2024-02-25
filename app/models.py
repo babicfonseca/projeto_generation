@@ -23,7 +23,7 @@ class User(Base):
 
     __table_args__ = (
         CheckConstraint("LENGTH(nome) >= 3", name='check_nome_length'),
-        CheckConstraint("validate_email(email)", name='check_email_format'),
+        CheckConstraint(validate_email(email), name='check_email_format'),
     )
 
 

@@ -11,7 +11,7 @@ def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-def get_user(db: Session, skip: int = 0, limit: int = 100):
+def get_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
@@ -28,8 +28,8 @@ def get_post(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Post).offset(skip).limit(limit).all()
 
 
-def create_user_post(db: Session, item: schemas.PostCreate, user_id: int):
-    db_post = models.Post(**item.dict(), usuario_id=user_id)
+def create_user_post(db: Session, post: schemas.PostCreate, user_id: int):
+    db_post = models.Post(**post.dict(), usuario_id=user_id)
     db.add(db_post)
     db.commit()
     db.refresh(db_post)
@@ -38,8 +38,8 @@ def create_user_post(db: Session, item: schemas.PostCreate, user_id: int):
 def get_theme(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Theme).offset(skip).limit(limit).all()
 
-def create_user_theme(db: Session, item: schemas.ThemeCreate, user_id: int):
-    db_theme = models.Theme(**item.dict(), usuario_id=user_id)
+def create_user_theme(db: Session, theme: schemas.ThemeCreate, tema_id: int):
+    db_theme = models.Theme(**theme.dict(), theme_id=tema_id)
     db.add(db_theme)
     db.commit()
     db.refresh(db_theme)

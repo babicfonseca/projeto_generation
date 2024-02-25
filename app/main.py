@@ -8,7 +8,6 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# TROCAR O NOME DAS TABELAS E ADICIONAR ERROS QUANDO TENTAREM ADICIONAR DADO SEM O NÚMERO MÍNIMO DE CARACTERES / COM EMAIL VALIDO - CHATGPT
 
 # Dependency
 def get_db():
@@ -41,14 +40,26 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@app.post("/users/{user_id}/items/", response_model=schemas.Item)
-def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+@app.post("/users/{user_id}/postagem/", response_model=schemas.Post)
+def create_post_for_user(
+    user_id: int, post: schemas.PostCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_user_item(db=db, item=item, user_id=user_id)
+    return crud.create_user_post(db=db, post=post, user_id=user_id)
 
 
-@app.get("/items/", response_model=list[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
-    return items
+@app.get("/postagem/", response_model=list[schemas.Post])
+def read_postagem(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    postagens = crud.get_post(db, skip=skip, limit=limit)
+    return postagens
+
+@app.post("/postagem/{post_id}/tema/", response_model=schemas.Theme)
+def create_theme_for_user(
+    user_id: int, theme: schemas.ThemeCreate, db: Session = Depends(get_db)
+):
+    return crud.create_user_theme(db=db, theme=theme, user_id=user_id)
+
+
+@app.get("/tema/", response_model=list[schemas.Theme])
+def read_tema(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    temas = crud.get_theme(db, skip=skip, limit=limit)
+    return temas
