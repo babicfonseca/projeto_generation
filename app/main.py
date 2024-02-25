@@ -8,6 +8,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+# TROCAR O NOME DAS TABELAS E ADICIONAR ERROS QUANDO TENTAREM ADICIONAR DADO SEM O NÚMERO MÍNIMO DE CARACTERES / COM EMAIL VALIDO- CHATGPT
 
 # Dependency
 def get_db():

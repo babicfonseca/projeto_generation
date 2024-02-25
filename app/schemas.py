@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+# TROCAR O NOME DAS TABELAS E ADICIONAR MAIS UMA TABELA 
+
 
 class ItemBase(BaseModel):
     title: str

@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from . import models, schemas
 
+# TROCAR O NOME DAS TABELAS E ADICIONAR MAIS UMA TABELA
 
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
