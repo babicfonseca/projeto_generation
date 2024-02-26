@@ -4,8 +4,9 @@ from datetime import date
 
 
 class PostBase(BaseModel):
-    titulo: str
-    texto: str | None = None
+    title: str
+    text: str | None = None
+    #theme_id: int
 
 
 class PostCreate(PostBase):
@@ -15,17 +16,17 @@ class PostCreate(PostBase):
 class Post(PostBase):
     id: int
     data: date
-    usuario_id: int
-    tema_id: int
+    user_id: int
+    theme_id: int
 
     class Config:
         orm_mode = True
 
 
 class UserBase(BaseModel):
-    nome: str
+    name: str
     email: str
-    foto: Optional[str] = None
+    photo: Optional[str] = None
 
 
 class UserCreate(UserBase):
@@ -34,14 +35,14 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    postagem: List[Post] = []
+    post: List[Post] = []
 
     class Config:
         orm_mode = True
 
 
 class ThemeBase(BaseModel):
-    descricao: str
+    description: str
 
 
 class ThemeCreate(ThemeBase):
@@ -50,7 +51,7 @@ class ThemeCreate(ThemeBase):
 
 class Theme(ThemeBase):
     id: int
-    postagens: List[Post] = []
+    posts: List[Post] = []
 
     class Config:
         orm_mode = True

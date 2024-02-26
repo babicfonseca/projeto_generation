@@ -3,8 +3,9 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.orm import validates
 
 from .database import Base
+#from database import Base
 
-from datetime import date
+from datetime import datetime
 
 import re
 
@@ -13,13 +14,13 @@ def is_valid_email(email):
     return re.match(pattern, email) is not None
 
 class User(Base):
-    __tablename__ = "usuario"
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    nome = Column(String, nullable=False)
+    name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    foto = Column(String)
-    postagens = relationship("Post", back_populates="autor")
+    photo = Column(String)
+    posts = relationship("Post", back_populates="author")
 
     @validates('email')
     def validate_email(self, key, email):
@@ -30,38 +31,38 @@ class User(Base):
         return email
 
     __table_args__ = (
-        CheckConstraint("LENGTH(nome) >= 3", name='check_nome_length'),
+        CheckConstraint("LENGTH(name) >= 3", name='check_name_length'),
     )
 
 
 
 class Post(Base):
-    __tablename__ = "postagem"
+    __tablename__ = "post"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    titulo = Column(String, nullable=False)
-    texto = Column(String, nullable=False)
-    data = Column(Date, nullable=False)
-    usuario_id = Column(Integer, ForeignKey("usuario.id"))
-    autor = relationship("User", back_populates="postagens")
-    tema_id = Column(Integer, ForeignKey('tema.id'))
-    tema = relationship("Theme", back_populates="postagens")
+    title = Column(String, nullable=False)
+    text = Column(String, nullable=False)
+    data = Column(Date, default=datetime.utcnow)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    author = relationship("User", back_populates="posts")
+    theme_id = Column(Integer, ForeignKey('theme.id'))
+    theme = relationship("Theme", back_populates="posts")
 
     __table_args__ = (
-        CheckConstraint("LENGTH(titulo) >= 5", name='check_titulo_length'),
-        CheckConstraint("LENGTH(texto) >= 10", name='check_texto_length'),
+        CheckConstraint("LENGTH(title) >= 5", name='check_title_length'),
+        CheckConstraint("LENGTH(text) >= 10", name='check_text_length'),
     )
 
 
 class Theme(Base):
-    __tablename__ = "tema"
+    __tablename__ = "theme"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    descricao = Column(String, nullable=False)
-    postagens = relationship("Post", back_populates="tema") 
+    description = Column(String, nullable=False)
+    posts = relationship("Post", back_populates="theme") 
 
     __table_args__ = (
-        CheckConstraint("LENGTH(descricao) >= 3", name='check_descricao_length'),
+        CheckConstraint("LENGTH(description) >= 3", name='check_description_length'),
     )
 
 print('rodou')
